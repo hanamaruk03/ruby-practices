@@ -18,19 +18,20 @@ last_day = check_last_date.day
 wday = Date.new(year, month, 1).wday
 
 week1 = []
-week1.push("   " * wday)
+if wday != 0
+  week1.push(("  ") + ("   " * (wday - 1)))
+end
 
 (1..last_day).each {|num|
-  if num <= 9
-    week1.push(" ")
-  end
   if (num + wday) % 7 == 0
-    week1.push(num.to_s + " \n")
+    week1.push(num.to_s.rjust(3) + "\n")
+  elsif Date.new(year, month, num).wday == 0
+    week1.push(num.to_s.rjust(2))
   else
-    week1.push(num.to_s + " ")
+    week1.push(num.to_s.rjust(3))
   end
 }
 
-print "   #{year}年 #{month}月   \n"
-print "日 月 火 水 木 金 土 \n"
-print week1.join + "\n"
+puts "#{year}年 #{month}月".center(18)
+puts "日 月 火 水 木 金 土"
+puts week1.join
