@@ -1,40 +1,41 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-scores = ARGV[0].split(',')
+knocked_down_pins = ARGV[0].split(',')
 shots = []
-scores.each do |s|
+BLANK_SHOT = nil
+knocked_down_pins.each do |pin|
   if shots.count < 19
-    if s == 'X'
+    if pin == 'X'
       shots << 10
-      shots << 'a'
+      shots << BLANK_SHOT
     else
-      shots << s.to_i
+      shots << pin.to_i
     end
   else
     shots <<
-      if s == 'X'
+      if pin == 'X'
         10
       else
-        s.to_i
+        pin.to_i
       end
   end
 end
 
 point = 0
 
-(0..18).step(2) do |v|
+(0..18).step(2) do |shot_index|
   point +=
-    if shots[v + 1] == 'a'
-      if shots[v + 3] == 'a'
-        shots[v] + shots[v + 2] + shots[v + 4]
+    if shots[shot_index + 1] == BLANK_SHOT
+      if shots[shot_index + 3] == BLANK_SHOT
+        shots[shot_index] + shots[shot_index + 2] + shots[shot_index + 4]
       else
-        shots[v] + shots[v + 2] + shots[v + 3]
+        shots[shot_index] + shots[shot_index + 2] + shots[shot_index + 3]
       end
-    elsif shots[v] + shots[v + 1] == 10
-      shots[v] + shots[v + 1] + shots[v + 2]
+    elsif shots[shot_index] + shots[shot_index + 1] == 10
+      shots[shot_index] + shots[shot_index + 1] + shots[shot_index + 2]
     else
-      shots[v] + shots[v + 1]
+      shots[shot_index] + shots[shot_index + 1]
     end
 end
 
