@@ -5,20 +5,14 @@ knocked_down_pins = ARGV[0].split(',')
 shots = []
 BLANK_SHOT = nil
 knocked_down_pins.each do |pin|
-  if shots.count < 19
-    if pin == 'X'
-      shots << 10
+  if pin == 'X'
+    shots << 10
+    # 10フレーム目（20投目より前）まではストライクした場合2投目をBLANK_SHOTにする
+    if shots.count < 19
       shots << BLANK_SHOT
-    else
-      shots << pin.to_i
     end
   else
-    shots <<
-      if pin == 'X'
-        10
-      else
-        pin.to_i
-      end
+    shots << pin.to_i
   end
 end
 
