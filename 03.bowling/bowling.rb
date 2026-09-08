@@ -20,16 +20,14 @@ point = 0
 
 (0..18).step(2) do |shot_index|
   point +=
+    # ストライクの場合
     if shots[shot_index + 1] == BLANK_SHOT
-      if shots[shot_index + 3] == BLANK_SHOT
-        shots[shot_index] + shots[shot_index + 2] + shots[shot_index + 4]
-      else
-        shots[shot_index] + shots[shot_index + 2] + shots[shot_index + 3]
-      end
-    elsif shots[shot_index] + shots[shot_index + 1] == 10
-      shots[shot_index] + shots[shot_index + 1] + shots[shot_index + 2]
+      shots.drop(shot_index).compact.first(3).sum
+    # スペアの場合
+    elsif shots[shot_index,2].sum == 10
+      shots[shot_index,3].sum
     else
-      shots[shot_index] + shots[shot_index + 1]
+      shots[shot_index,2].sum
     end
 end
 
