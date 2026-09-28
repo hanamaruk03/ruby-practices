@@ -4,12 +4,12 @@
 BLANK_SHOT = nil
 LAST_SHOT = 19
 
-def strike?(shots, shot_index)
-  shots[shot_index] == 10
+def strike?(shot)
+  shot == 10
 end
 
-def spare?(shots, shot_index)
-  shots[shot_index, 2].sum == 10
+def spare?(shots)
+  shots.sum == 10
 end
 
 knocked_down_pins = ARGV[0].split(',')
@@ -28,9 +28,9 @@ point = 0
 
 (0..18).step(2) do |shot_index|
   point +=
-    if strike?(shots, shot_index)
+    if strike?(shots[shot_index])
       shots.drop(shot_index).compact.first(3).sum
-    elsif spare?(shots, shot_index)
+    elsif spare?(shots[shot_index, 2])
       shots[shot_index, 3].sum
     else
       shots[shot_index, 2].sum
