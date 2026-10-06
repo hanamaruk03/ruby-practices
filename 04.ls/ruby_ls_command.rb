@@ -34,7 +34,7 @@ def adjust_width(row, width)
 end
 
 def format_array(target)
-  target << nil while target.count % COLUMN_WIDTH != 0
+  target += nil while target.count % COLUMN_WIDTH != 0
   target
 end
 
