@@ -5,7 +5,8 @@ COLUMN_WIDTH = 3
 PARTITION_BLANK = 2
 
 def main
-  formatted_items = format_array(Dir.children(Dir.getwd).sort)
+  items = Dir.children(Dir.getwd).sort
+  formatted_items = pack_nils(items)
 
   row_size = formatted_items.count / COLUMN_WIDTH
 
