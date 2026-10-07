@@ -1,13 +1,13 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-COLUMN_WIDTH = 3
+COLUMN_NUMBER = 3
 
 def main
   items = Dir.children(Dir.getwd).sort
   formatted_items = pack_nils(items)
 
-  row_size = formatted_items.count / COLUMN_WIDTH
+  row_size = formatted_items.count / COLUMN_NUMBER
 
   horizontal_rows = []
 
