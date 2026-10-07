@@ -2,7 +2,6 @@
 # frozen_string_literal: true
 
 COLUMN_WIDTH = 3
-PARTITION_BLANK = 2
 
 def main
   items = Dir.children(Dir.getwd).sort
@@ -22,7 +21,7 @@ def main
   results_array = horizontal_rows.transpose
 
   results_array.each do |file_name|
-    puts file_name.compact.join(' ' * PARTITION_BLANK)
+    puts file_name.compact.join('  ')
   end
 end
 
