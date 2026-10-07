@@ -20,8 +20,8 @@ def main
 
   results_array = horizontal_rows.transpose
 
-  results_array.each do |file_name|
-    puts file_name.compact.join('  ')
+  results_array.each do |file_names|
+    puts file_names.compact.join('  ')
   end
 end
 
