@@ -18,9 +18,9 @@ def main
     horizontal_rows << adjust_width(row, display_width)
   end
 
-  results_array = horizontal_rows.transpose
+  results = horizontal_rows.transpose
 
-  results_array.each do |file_names|
+  results.each do |file_names|
     puts file_names.compact.join('  ')
   end
 end
