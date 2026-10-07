@@ -15,7 +15,7 @@ def main
   formatted_items.each_slice(row_size) do |row|
     next if row.all?(&:nil?)
 
-    display_width = row.compact.max { |file_name_a, file_name_b| file_name_a.length <=> file_name_b.length }.length
+    display_width = row.compact.max_by(&:length).length
     horizontal_rows << adjust_width(row, display_width)
   end
 
