@@ -1,13 +1,13 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-COLUMN_NUMBER = 3
+COLUMN_SIZE = 3
 
 def main
   items = Dir.children(Dir.getwd).sort
-  items += [nil] while items.count % COLUMN_NUMBER != 0
+  items += [nil] while items.count % COLUMN_SIZE != 0
 
-  row_size = items.count / COLUMN_NUMBER
+  row_size = items.count / COLUMN_SIZE
 
   horizontal_rows = []
 
