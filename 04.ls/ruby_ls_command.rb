@@ -5,13 +5,13 @@ COLUMN_NUMBER = 3
 
 def main
   items = Dir.children(Dir.getwd).sort
-  formatted_items = pack_nils(items)
+  items += [nil] while items.count % COLUMN_NUMBER != 0
 
-  row_size = formatted_items.count / COLUMN_NUMBER
+  row_size = items.count / COLUMN_NUMBER
 
   horizontal_rows = []
 
-  formatted_items.each_slice(row_size) do |row|
+  items.each_slice(row_size) do |row|
     next if row.all?(&:nil?)
 
     display_width = row.compact.max_by(&:length).length
@@ -29,11 +29,6 @@ def adjust_width(row, width)
 
     file_name.ljust(width)
   end
-end
-
-def pack_nils(array)
-  array += [nil] while array.count % COLUMN_NUMBER != 0
-  array
 end
 
 main
