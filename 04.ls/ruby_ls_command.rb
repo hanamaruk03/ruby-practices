@@ -14,8 +14,8 @@ def main
   items.each_slice(row_size) do |row|
     next if row.all?(&:nil?)
 
-    display_width = row.compact.max_by(&:length).length
-    horizontal_rows << adjust_width(row, display_width)
+    width = row.compact.max_by(&:length).length
+    horizontal_rows << adjust_width(row, width)
   end
 
   horizontal_rows.transpose.each do |file_names|
