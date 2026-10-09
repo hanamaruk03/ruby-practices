@@ -25,9 +25,7 @@ end
 
 def adjust_width(row, width)
   row.map do |file_name|
-    next if file_name.nil?
-
-    file_name.ljust(width)
+    file_name&.ljust(width)
   end
 end
 
