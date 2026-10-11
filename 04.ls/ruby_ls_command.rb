@@ -9,14 +9,13 @@ def main
 
   row_size = items.count / COLUMN_SIZE
 
-  horizontal_rows = []
+  horizontal_rows =
+    items.each_slice(row_size).filter_map do |row|
+      next if row.all?(&:nil?)
 
-  items.each_slice(row_size) do |row|
-    next if row.all?(&:nil?)
-
-    width = row.compact.max_by(&:length).length
-    horizontal_rows << adjust_width(row, width)
-  end
+      width = row.compact.max_by(&:length).length
+      adjust_width(row, width)
+    end
 
   horizontal_rows.transpose.each do |file_names|
     puts file_names.compact.join('  ')
