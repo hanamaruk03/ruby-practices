@@ -1,10 +1,23 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require "optparse"
+
 COLUMN_SIZE = 3
 
 def main
-  items = Dir.children(Dir.getwd).sort
+  options = {}
+  opt = OptionParser.new
+  opt.on('-a'){|v| options[:a] = v}
+
+  opt.parse!(ARGV)
+
+  if options[:a]
+    items = Dir.entries(Dir.getwd).sort
+  else
+    items = Dir.glob("*").sort
+  end
+
   items += [nil] while items.count % COLUMN_SIZE != 0
 
   row_size = items.count / COLUMN_SIZE
