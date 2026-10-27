@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require "optparse"
+require 'optparse'
 
 COLUMN_SIZE = 3
 
