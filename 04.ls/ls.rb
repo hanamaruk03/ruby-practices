@@ -7,7 +7,7 @@ COLUMN_SIZE = 3
 
 def main
   options = parse_options
-  items = fetch_sorted_items(show_all: options[:a])
+  items = fetch_sorted_items(descending: options[:r])
   formatted_rows = build_horizontal_rows(items)
   print_grid(formatted_rows)
 end
@@ -15,14 +15,14 @@ end
 def parse_options
   options = {}
   opt = OptionParser.new
-  opt.on('-a') { |v| options[:a] = v }
+  opt.on('-r') { |v| options[:r] = v }
   opt.parse!(ARGV)
   options
 end
 
-def fetch_sorted_items(show_all:)
-  if show_all
-    Dir.entries(Dir.getwd).sort
+def fetch_sorted_items(descending:)
+  if descending
+    Dir.glob('*').sort.reverse
   else
     Dir.glob('*').sort
   end
