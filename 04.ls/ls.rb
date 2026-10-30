@@ -20,12 +20,10 @@ def parse_options
   options
 end
 
-def fetch_sorted_items(reverse:)
-  if reverse
-    Dir.glob('*').sort.reverse
-  else
-    Dir.glob('*').sort
-  end
+def fetch_sorted_items(reversed: false)
+  items = Dir.glob('*').sort
+  items.reverse! if reversed
+  items
 end
 
 def build_horizontal_rows(items)
