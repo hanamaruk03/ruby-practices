@@ -7,7 +7,7 @@ COLUMN_SIZE = 3
 
 def main
   options = parse_options
-  items = fetch_sorted_items(reverse: options[:r])
+  items = fetch_sorted_items(reversed: options[:r])
   formatted_rows = build_horizontal_rows(items)
   print_grid(formatted_rows)
 end
