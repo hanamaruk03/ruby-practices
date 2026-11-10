@@ -23,7 +23,7 @@ def main
 
   formatted_rows =
     if options[:l]
-      items = catch_objects.transpose
+      items = extract_file_data.transpose
       total_blocks = calculate_blocks(items[BYTE_ARRAY])
       puts "total #{total_blocks}"
 
@@ -47,12 +47,9 @@ def parse_options
   options
 end
 
-def catch_objects
+def extract_file_data
   objects = Pathname.glob('*')
-  check_files(objects)
-end
-
-def check_files(objects)
+  # check_files(objects)
   objects.map do |detail_datas|
     [
       judge_type(detail_datas) + change_mode_to_aurthority(detail_datas.stat.mode),
@@ -65,6 +62,20 @@ def check_files(objects)
     ]
   end
 end
+
+# def check_files(objects)
+#   objects.map do |detail_datas|
+#     [
+#       judge_type(detail_datas) + change_mode_to_aurthority(detail_datas.stat.mode),
+#       detail_datas.stat.nlink.to_s,
+#       Etc.getpwuid(detail_datas.stat.uid).name,
+#       Etc.getgrgid(detail_datas.stat.gid).name,
+#       detail_datas.size.to_s,
+#       detail_datas.mtime.strftime('%b %d %H:%M'),
+#       detail_datas.basename.to_s
+#     ]
+#   end
+# end
 
 def calculate_blocks(byte_array)
   byte_array.map do |byte|
