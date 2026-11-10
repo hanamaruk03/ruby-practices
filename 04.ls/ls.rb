@@ -7,6 +7,16 @@ require 'etc'
 
 COLUMN_SIZE = 3
 BYTE_ARRAY = 4
+AUTHORITY = {
+  '000' => '---',
+  '001' => '--x',
+  '010' => '-w-',
+  '011' => '-wx',
+  '100' => 'r--',
+  '101' => 'r-x',
+  '110' => 'rw-',
+  '111' => 'rwx'
+}
 
 def main
   options = parse_options
@@ -64,18 +74,8 @@ def calculate_blocks(byte_array)
 end
 
 def change_mode_to_aurthority(mode)
-  authority = {
-    '000' => '---',
-    '001' => '--x',
-    '010' => '-w-',
-    '011' => '-wx',
-    '100' => 'r--',
-    '101' => 'r-x',
-    '110' => 'rw-',
-    '111' => 'rwx'
-  }
   mode.to_s(2)[-9, 9].scan(/.{1,3}/).map do |n|
-    authority[n]
+    AUTHORITY[n]
   end.join
 end
 
