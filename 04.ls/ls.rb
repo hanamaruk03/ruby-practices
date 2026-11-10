@@ -23,10 +23,10 @@ def main
 
   formatted_rows =
     if options[:l]
-      total_blocks = calculate_blocks(catch_objects.transpose[BYTE_ARRAY])
+      items = catch_objects.transpose
+      total_blocks = calculate_blocks(items[BYTE_ARRAY])
       puts "total #{total_blocks}"
 
-      items = catch_objects.transpose
       items.map.with_index do |row, i|
         width = row.max_by(&:length).length
         lr = i != BYTE_ARRAY ? :left : :right
