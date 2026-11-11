@@ -48,34 +48,19 @@ def parse_options
 end
 
 def extract_file_data
-  objects = Pathname.glob('*')
-  # check_files(objects)
-  objects.map do |detail_datas|
-    [
-      judge_type(detail_datas) + change_mode_to_aurthority(detail_datas.stat.mode),
-      detail_datas.stat.nlink.to_s,
-      Etc.getpwuid(detail_datas.stat.uid).name,
-      Etc.getgrgid(detail_datas.stat.gid).name,
-      detail_datas.size.to_s,
-      detail_datas.mtime.strftime('%b %d %H:%M'),
-      detail_datas.basename.to_s
-    ]
+  items = Pathname.glob('*')
+  items.map do |detail_datas|
+    {
+      type_and_authority: judge_type(detail_datas) + change_mode_to_aurthority(detail_datas.stat.mode),
+      count_hardlink: detail_datas.stat.nlink.to_s,
+      owner_name: Etc.getpwuid(detail_datas.stat.uid).name,
+      owner_groupe_name: Etc.getgrgid(detail_datas.stat.gid).name,
+      size: detail_datas.size.to_s,
+      modification_date_and_time: detail_datas.mtime.strftime('%b %d %H:%M'),
+      file_name: detail_datas.basename.to_s
+    }
   end
 end
-
-# def check_files(objects)
-#   objects.map do |detail_datas|
-#     [
-#       judge_type(detail_datas) + change_mode_to_aurthority(detail_datas.stat.mode),
-#       detail_datas.stat.nlink.to_s,
-#       Etc.getpwuid(detail_datas.stat.uid).name,
-#       Etc.getgrgid(detail_datas.stat.gid).name,
-#       detail_datas.size.to_s,
-#       detail_datas.mtime.strftime('%b %d %H:%M'),
-#       detail_datas.basename.to_s
-#     ]
-#   end
-# end
 
 def calculate_blocks(byte_array)
   byte_array.map do |byte|
