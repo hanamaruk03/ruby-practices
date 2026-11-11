@@ -16,7 +16,7 @@ AUTHORITY = {
   '101' => 'r-x',
   '110' => 'rw-',
   '111' => 'rwx'
-}
+}.freeze
 
 def main
   options = parse_options
