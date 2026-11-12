@@ -26,7 +26,6 @@ def main
 
   formatted_rows =
     if options[:l]
-      items = extract_file_data.transpose
       total_blocks = count_total_blocks(extract_file_data)
       puts "total #{total_blocks}"
 
@@ -35,7 +34,7 @@ def main
       items = Dir.glob('*').sort
       build_horizontal_rows(items).transpose
     end
-  print_grid(formatted_rows.transpose)
+  print_grid(formatted_rows)
 end
 
 def parse_options
