@@ -80,13 +80,13 @@ def change_mode_to_aurthority(mode)
   mode.to_s(2)[-9, 9].gsub(/.{1,3}/, AUTHORITY)
 end
 
-def judge_type(object)
-  if object.file?
-    '-'
-  elsif object.directory?
+def entry_type(object)
+  if object.directory?
     'd'
   elsif object.symlink?
     'l'
+  else
+    '-'
   end
 end
 
