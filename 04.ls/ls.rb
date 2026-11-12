@@ -30,14 +30,10 @@ def main
       total_blocks = count_total_blocks(extract_file_data)
       puts "total #{total_blocks}"
 
-      items.map.with_index do |row, i|
-        width = row.max_by(&:length).length
-        lr = i != BYTE_ARRAY ? :left : :right
-        adjust_width(row, width, lr)
-      end
+      extract_file_data.map(&:values)
     else
       items = Dir.glob('*').sort
-      build_horizontal_rows(items)
+      build_horizontal_rows(items).transpose
     end
   print_grid(formatted_rows.transpose)
 end
@@ -105,20 +101,13 @@ def build_horizontal_rows(items)
     next if row.all?(&:nil?)
 
     width = row.compact.max_by(&:length).length
-    adjust_width(row, width, :left)
+    row.map { |f| f&.ljust(width) }
   end
 end
 
 def print_grid(horizontal_rows)
   horizontal_rows.each do |file_names|
     puts file_names.compact.join(' ')
-  end
-end
-
-def adjust_width(row, width, which_side)
-  case which_side
-  when :left  then row.map { |f| f&.ljust(width) }
-  when :right then row.map { |f| f&.rjust(width) }
   end
 end
 
