@@ -7,6 +7,9 @@ require 'etc'
 
 COLUMN_SIZE = 3
 BYTE_ARRAY = 4
+BLOCK_SIZE = 4096
+KB_PER_BLOCK = 4
+
 AUTHORITY = {
   '000' => '---',
   '001' => '--x',
@@ -62,10 +65,10 @@ def extract_file_data
   end
 end
 
-def calculate_blocks(byte_array)
-  byte_array.map do |byte|
-    unit_count = (byte.to_f / 4096.0).ceil
-    unit_count * 4
+def total_blocks(file_data)
+  file_data.map do |hash|
+    unit_count = (hash[:size].to_f / BLOCK_SIZE).ceil
+    unit_count * KB_PER_BLOCK
   end.sum
 end
 
