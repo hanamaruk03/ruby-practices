@@ -27,7 +27,7 @@ def main
   formatted_rows =
     if options[:l]
       items = extract_file_data.transpose
-      total_blocks = calculate_blocks(items[BYTE_ARRAY])
+      total_blocks = count_total_blocks(extract_file_data)
       puts "total #{total_blocks}"
 
       items.map.with_index do |row, i|
@@ -65,9 +65,9 @@ def extract_file_data
   end
 end
 
-def total_blocks(file_data)
+def count_total_blocks(file_data)
   file_data.map do |hash|
-    unit_count = (hash[:size].to_f / BLOCK_SIZE).ceil
+    unit_count = hash[:size].to_i.ceildiv(BLOCK_SIZE)
     unit_count * KB_PER_BLOCK
   end.sum
 end
