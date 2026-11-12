@@ -77,9 +77,7 @@ def count_total_blocks(file_data)
 end
 
 def change_mode_to_aurthority(mode)
-  mode.to_s(2)[-9, 9].scan(/.{1,3}/).map do |n|
-    AUTHORITY[n]
-  end.join
+  mode.to_s(2)[-9, 9].gsub(/.{1,3}/, AUTHORITY)
 end
 
 def judge_type(object)
