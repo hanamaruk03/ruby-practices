@@ -70,8 +70,8 @@ def extract_file_data
 end
 
 def count_total_blocks(file_data)
-  file_data.map do |hash|
-    unit_count = hash[:size].to_i.ceildiv(BLOCK_SIZE)
+  file_data.map do |item_details|
+    unit_count = item_details[:size].to_i.ceildiv(BLOCK_SIZE)
     unit_count * KB_PER_BLOCK
   end.sum
 end
