@@ -77,7 +77,7 @@ def count_total_blocks(file_data)
 end
 
 def change_mode_to_aurthority(mode)
-  mode.to_s(2)[-9, 9].gsub(/.{1,3}/, AUTHORITY)
+  mode.to_s(2)[-9..].gsub(/.{1,3}/, AUTHORITY)
 end
 
 def entry_type(object)
