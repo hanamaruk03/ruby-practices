@@ -53,7 +53,7 @@ def extract_file_data
       nlink: entry.stat.nlink.to_s,
       owner_name: Etc.getpwuid(entry.stat.uid).name,
       owner_groupe_name: Etc.getgrgid(entry.stat.gid).name,
-      size: entry.size.to_s,
+      size: entry.size,
       modification_date_and_time: entry.mtime.strftime('%b %d %H:%M'),
       file_name: entry.basename.to_s
     }
@@ -63,18 +63,18 @@ end
 def format_entry(entries)
   width = Hash.new(0)
   entries.each do |hash|
-    hash.each { |key, value| width[key] = [width[key], value.length].max }
+    hash.each { |key, value| width[key] = [width[key], value.to_s.length].max }
   end
   entries.map do |details|
     details.map do |key, value|
-      %i[nlink size].include?(key) ? value.rjust(width[key]) : value.ljust(width[key])
+      %i[nlink size].include?(key) ? value.to_s.rjust(width[key]) : value.to_s.ljust(width[key])
     end
   end
 end
 
 def count_total_blocks(items)
   items.sum do |item_details|
-    unit_count = item_details[:size].to_i.ceildiv(BLOCK_SIZE)
+    unit_count = item_details[:size].ceildiv(BLOCK_SIZE)
     unit_count * KB_PER_BLOCK
   end
 end
