@@ -70,10 +70,10 @@ def extract_file_data
 end
 
 def count_total_blocks(items)
-  items.map do |item_details|
+  items.sum do |item_details|
     unit_count = item_details[:size].to_i.ceildiv(BLOCK_SIZE)
     unit_count * KB_PER_BLOCK
-  end.sum
+  end
 end
 
 def change_mode_to_aurthority(mode)
