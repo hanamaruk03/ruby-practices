@@ -30,7 +30,7 @@ def main
       total_blocks = count_total_blocks(items)
       puts "total #{total_blocks}"
 
-      items.map(&:values)
+      format_entry(items)
     else
       items = Dir.glob('*').sort
       build_horizontal_rows(items).transpose
@@ -47,26 +47,29 @@ def parse_options
 end
 
 def extract_file_data
-  width = { type_and_authority: 0,
-            nlink: 0,
-            owner_name: 0,
-            owner_groupe_name: 0,
-            size: 0,
-            modification_date_and_time: 0,
-            file_name: 0 }
-
-  entry_details = Pathname.glob('*').map do |entry|
-    details = { type_and_authority: entry_type(entry) + change_mode_to_aurthority(entry.stat.mode),
-                     nlink: entry.stat.nlink.to_s,
-                     owner_name: Etc.getpwuid(entry.stat.uid).name,
-                     owner_groupe_name: Etc.getgrgid(entry.stat.gid).name,
-                     size: entry.size.to_s,
-                     modification_date_and_time: entry.mtime.strftime('%b %d %H:%M'),
-                     file_name: entry.basename.to_s }
-    details.each { |key, value| width[key] = [width[key], value.length].max }
-    details
+  Pathname.glob('*').map do |entry|
+    {
+      type_and_authority: entry_type(entry) + change_mode_to_aurthority(entry.stat.mode),
+      nlink: entry.stat.nlink.to_s,
+      owner_name: Etc.getpwuid(entry.stat.uid).name,
+      owner_groupe_name: Etc.getgrgid(entry.stat.gid).name,
+      size: entry.size.to_s,
+      modification_date_and_time: entry.mtime.strftime('%b %d %H:%M'),
+      file_name: entry.basename.to_s
+    }
   end
-  entry_details.map { |details| details.to_h { |key, value| [key, %i[nlink size].include?(key) ? value.rjust(width[key]) : value.ljust(width[key])] } }
+end
+
+def format_entry(entries)
+  width = Hash.new(0)
+  entries.each do |hash|
+    hash.each { |key, value| width[key] = [width[key], value.length].max }
+  end
+  entries.map do |details|
+    details.map do |key, value|
+      %i[nlink size].include?(key) ? value.rjust(width[key]) : value.ljust(width[key])
+    end
+  end
 end
 
 def count_total_blocks(items)
