@@ -55,18 +55,18 @@ def extract_file_data
             modification_date_and_time: 0,
             file_name: 0 }
 
-  items = Pathname.glob('*').map do |item|
-    item_details = { type_and_authority: entry_type(item) + change_mode_to_aurthority(item.stat.mode),
-                     nlink: item.stat.nlink.to_s,
-                     owner_name: Etc.getpwuid(item.stat.uid).name,
-                     owner_groupe_name: Etc.getgrgid(item.stat.gid).name,
-                     size: item.size.to_s,
-                     modification_date_and_time: item.mtime.strftime('%b %d %H:%M'),
-                     file_name: item.basename.to_s }
-    item_details.each { |key, value| width[key] = [width[key], value.length].max }
-    item_details
+  entry_details = Pathname.glob('*').map do |entry|
+    details = { type_and_authority: entry_type(entry) + change_mode_to_aurthority(entry.stat.mode),
+                     nlink: entry.stat.nlink.to_s,
+                     owner_name: Etc.getpwuid(entry.stat.uid).name,
+                     owner_groupe_name: Etc.getgrgid(entry.stat.gid).name,
+                     size: entry.size.to_s,
+                     modification_date_and_time: entry.mtime.strftime('%b %d %H:%M'),
+                     file_name: entry.basename.to_s }
+    details.each { |key, value| width[key] = [width[key], value.length].max }
+    details
   end
-  items.map { |item_details| item_details.to_h { |key, value| [key, %i[nlink size].include?(key) ? value.rjust(width[key]) : value.ljust(width[key])] } }
+  entry_details.map { |details| details.to_h { |key, value| [key, %i[nlink size].include?(key) ? value.rjust(width[key]) : value.ljust(width[key])] } }
 end
 
 def count_total_blocks(items)
