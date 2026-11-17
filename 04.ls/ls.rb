@@ -69,8 +69,8 @@ def extract_file_data
   items.map { |item_details| item_details.to_h { |key, value| [key, %i[nlink size].include?(key) ? value.rjust(width[key]) : value.ljust(width[key])] } }
 end
 
-def count_total_blocks(file_data)
-  file_data.map do |item_details|
+def count_total_blocks(items)
+  items.map do |item_details|
     unit_count = item_details[:size].to_i.ceildiv(BLOCK_SIZE)
     unit_count * KB_PER_BLOCK
   end.sum
