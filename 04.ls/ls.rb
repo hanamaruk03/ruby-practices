@@ -62,12 +62,13 @@ end
 
 def format_entry(entries)
   widths = Hash.new(0)
+  rjust_symbols = %i[nlink size]
   entries.each do |details|
     details.each { |key, value| widths[key] = [widths[key], value.to_s.length].max }
   end
   entries.map do |details|
     details.map do |key, value|
-      %i[nlink size].include?(key) ? value.to_s.rjust(widths[key]) : value.to_s.ljust(widths[key])
+      rjust_symbols.include?(key) ? value.to_s.rjust(widths[key]) : value.to_s.ljust(widths[key])
     end
   end
 end
