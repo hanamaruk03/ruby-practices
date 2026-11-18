@@ -108,7 +108,7 @@ def build_horizontal_rows(items)
 end
 
 def print_grid(rows)
-  rows.each do |file_names|
+  rows.each do |row|
     puts file_names.compact.join(' ')
   end
 end
