@@ -61,13 +61,13 @@ def extract_file_data
 end
 
 def format_entry(entries)
-  width = Hash.new(0)
+  widths = Hash.new(0)
   entries.each do |hash|
-    hash.each { |key, value| width[key] = [width[key], value.to_s.length].max }
+    hash.each { |key, value| widths[key] = [widths[key], value.to_s.length].max }
   end
   entries.map do |details|
     details.map do |key, value|
-      %i[nlink size].include?(key) ? value.to_s.rjust(width[key]) : value.to_s.ljust(width[key])
+      %i[nlink size].include?(key) ? value.to_s.rjust(widths[key]) : value.to_s.ljust(widths[key])
     end
   end
 end
