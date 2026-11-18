@@ -54,7 +54,7 @@ def extract_file_data
       owner_name: Etc.getpwuid(entry.stat.uid).name,
       owner_groupe_name: Etc.getgrgid(entry.stat.gid).name,
       size: entry.size,
-      modification_date_and_time: entry.mtime.strftime('%b %d %H:%M'),
+      modification_time: entry.mtime.strftime('%b %d %H:%M'),
       file_name: entry.basename
     }
   end
