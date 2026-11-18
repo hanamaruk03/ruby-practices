@@ -49,7 +49,7 @@ end
 def extract_file_data
   Pathname.glob('*').map do |entry|
     {
-      type_and_authority: entry_type(entry) + change_mode_to_aurthority(entry.stat.mode),
+      type_and_authority: entry_type(entry) + change_mode_to_permission(entry.stat.mode),
       nlink: entry.stat.nlink,
       owner_name: Etc.getpwuid(entry.stat.uid).name,
       owner_groupe_name: Etc.getgrgid(entry.stat.gid).name,
@@ -79,7 +79,7 @@ def count_total_blocks(items)
   end
 end
 
-def change_mode_to_aurthority(mode)
+def change_mode_to_permission(mode)
   mode.to_s(2)[-9..].gsub(/.{1,3}/, AUTHORITY)
 end
 
