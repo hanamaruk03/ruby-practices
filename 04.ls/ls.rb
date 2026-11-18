@@ -109,7 +109,7 @@ end
 
 def print_grid(rows)
   rows.each do |row|
-    puts file_names.compact.join(' ')
+    puts row.compact.join(' ')
   end
 end
 
