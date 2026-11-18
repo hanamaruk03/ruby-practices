@@ -83,10 +83,10 @@ def change_mode_to_aurthority(mode)
   mode.to_s(2)[-9..].gsub(/.{1,3}/, AUTHORITY)
 end
 
-def entry_type(object)
-  if object.directory?
+def entry_type(entry)
+  if entry.directory?
     'd'
-  elsif object.symlink?
+  elsif entry.symlink?
     'l'
   else
     '-'
