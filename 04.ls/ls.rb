@@ -26,11 +26,11 @@ def main
 
   formatted_rows =
     if options[:l]
-      items = extract_file_data
-      total_blocks = count_total_blocks(items)
+      entries = extract_file_data
+      total_blocks = count_total_blocks(entries)
       puts "total #{total_blocks}"
 
-      format_entry(items)
+      format_entry(entries)
     else
       items = Dir.glob('*').sort
       build_horizontal_rows(items).transpose
