@@ -62,8 +62,8 @@ end
 
 def format_entry(entries)
   widths = Hash.new(0)
-  entries.each do |hash|
-    hash.each { |key, value| widths[key] = [widths[key], value.to_s.length].max }
+  entries.each do |details|
+    details.each { |key, value| widths[key] = [widths[key], value.to_s.length].max }
   end
   entries.map do |details|
     details.map do |key, value|
