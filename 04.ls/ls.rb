@@ -52,7 +52,7 @@ def extract_file_data
       type_and_authority: entry_type(entry) + change_mode_to_permission(entry.stat.mode),
       nlink: entry.stat.nlink,
       owner_name: Etc.getpwuid(entry.stat.uid).name,
-      owner_groupe_name: Etc.getgrgid(entry.stat.gid).name,
+      group_name: Etc.getgrgid(entry.stat.gid).name,
       size: entry.size,
       modification_time: entry.mtime.strftime('%b %d %H:%M'),
       file_name: entry.basename
