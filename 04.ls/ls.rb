@@ -24,7 +24,7 @@ AUTHORITY = {
 def main
   options = parse_options
 
-  formatted_rows =
+  rows =
     if options[:l]
       entries = extract_file_entries
       total_blocks = count_total_blocks(entries)
@@ -35,7 +35,7 @@ def main
       items = Dir.glob('*').sort
       build_horizontal_rows(items).transpose
     end
-  print_grid(formatted_rows)
+  print_grid(rows)
 end
 
 def parse_options
