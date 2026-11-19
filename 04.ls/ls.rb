@@ -26,7 +26,7 @@ def main
 
   formatted_rows =
     if options[:l]
-      entries = extract_file_data
+      entries = extract_file_entries
       total_blocks = count_total_blocks(entries)
       puts "total #{total_blocks}"
 
