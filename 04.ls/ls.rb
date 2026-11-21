@@ -46,16 +46,16 @@ def parse_options
   options
 end
 
-def extract_file_data
-  Pathname.glob('*').map do |entry|
+def extract_file_entries
+  Pathname.glob('*').map do |pathname|
     {
-      type_and_authority: entry_type(entry) + change_mode_to_permission(entry.stat.mode),
-      nlink: entry.stat.nlink,
-      owner_name: Etc.getpwuid(entry.stat.uid).name,
-      group_name: Etc.getgrgid(entry.stat.gid).name,
-      size: entry.size,
-      modification_time: entry.mtime.strftime('%b %d %H:%M'),
-      file_name: entry.basename
+      type_and_authority: entry_type(pathname) + change_mode_to_permission(pathname.stat.mode),
+      nlink: pathname.stat.nlink,
+      owner_name: Etc.getpwuid(pathname.stat.uid).name,
+      group_name: Etc.getgrgid(pathname.stat.gid).name,
+      size: pathname.size,
+      modification_time: pathname.mtime.strftime('%b %d %H:%M'),
+      file_name: pathname.basename
     }
   end
 end
