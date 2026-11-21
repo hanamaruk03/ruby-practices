@@ -73,8 +73,8 @@ def format_entry(entries)
   end
 end
 
-def count_total_blocks(items)
-  items.sum do |item_details|
+def count_total_blocks(entries)
+  entries.sum do |item_details|
     unit_count = item_details[:size].ceildiv(BLOCK_SIZE)
     unit_count * KB_PER_BLOCK
   end
