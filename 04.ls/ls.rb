@@ -30,12 +30,12 @@ def main
     total_blocks = count_total_blocks(entries)
     puts "total #{total_blocks}"
 
-    print_grid(format_entry(entries))
+    print_grid(format_entry(entries), ' ')
   else
     items = file_list.map { |file| file.basename.to_s }
     rows = build_horizontal_rows(items).transpose
 
-    print_grid(rows)
+    print_grid(rows, '  ')
   end
 end
 
@@ -113,9 +113,9 @@ def build_horizontal_rows(items)
   end
 end
 
-def print_grid(rows)
+def print_grid(rows, separator)
   rows.each do |row|
-    puts row.compact.join('  ')
+    puts row.compact.join(separator)
   end
 end
 
