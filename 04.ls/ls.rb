@@ -115,7 +115,7 @@ end
 
 def print_grid(rows)
   rows.each do |row|
-    puts row.compact.join(' ')
+    puts row.compact.join('  ')
   end
 end
 
