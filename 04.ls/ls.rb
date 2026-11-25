@@ -5,6 +5,7 @@ require 'optparse'
 require 'pathname'
 require 'etc'
 
+OPTIONS = ARGV.getopts('a', 'r', 'l')
 COLUMN_SIZE = 3
 BYTE_ARRAY = 4
 BLOCK_SIZE = 4096
@@ -22,20 +23,25 @@ AUTHORITY = {
 }.freeze
 
 def main
-  options = parse_options
+  file_list = make_list
 
-  rows =
-    if options[:l]
-      entries = extract_file_entries
-      total_blocks = count_total_blocks(entries)
-      puts "total #{total_blocks}"
+  if OPTIONS['l']
+    entries = extract_file_entries(file_list)
+    total_blocks = count_total_blocks(entries)
+    puts "total #{total_blocks}"
 
-      format_entry(entries)
-    else
-      items = Dir.glob('*').sort
-      build_horizontal_rows(items).transpose
-    end
-  print_grid(rows)
+    print_grid(format_entry(entries))
+  else
+    items = file_list.map { |file| file.basename.to_s }
+    rows = build_horizontal_rows(items).transpose
+
+    print_grid(rows)
+  end
+end
+
+def make_list
+  list = Pathname.glob('*', OPTIONS['a'] ? File::FNM_DOTMATCH : 0).sort
+  OPTIONS['r'] ? list.reverse : list
 end
 
 def parse_options
@@ -46,16 +52,16 @@ def parse_options
   options
 end
 
-def extract_file_entries
-  Pathname.glob('*').map do |pathname|
+def extract_file_entries(file_list)
+  file_list.map do |file|
     {
-      type_and_authority: entry_type(pathname) + change_mode_to_permission(pathname.stat.mode),
-      nlink: pathname.stat.nlink,
-      owner_name: Etc.getpwuid(pathname.stat.uid).name,
-      group_name: Etc.getgrgid(pathname.stat.gid).name,
-      size: pathname.size,
-      modification_time: pathname.mtime.strftime('%b %d %H:%M'),
-      file_name: pathname.basename
+      type_and_authority: entry_type(file) + change_mode_to_permission(file.stat.mode),
+      nlink: file.stat.nlink,
+      owner_name: Etc.getpwuid(file.stat.uid).name,
+      group_name: Etc.getgrgid(file.stat.gid).name,
+      size: file.size,
+      modification_time: file.mtime.strftime('%b %d %H:%M'),
+      file_name: file.basename
     }
   end
 end
