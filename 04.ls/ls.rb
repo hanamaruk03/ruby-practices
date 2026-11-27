@@ -23,7 +23,7 @@ AUTHORITY = {
 
 def main
   options = ARGV.getopts('a', 'r', 'l')
-  file_list = make_list(options)
+  file_list = glob_list(options)
 
   if options['l']
     entries = extract_file_entries(file_list)
@@ -39,9 +39,10 @@ def main
   end
 end
 
-def make_list(options)
-  list = Pathname.glob('*', options['a'] ? File::FNM_DOTMATCH : 0).sort
-  options['r'] ? list.reverse : list
+def glob_list(options)
+  flags = options['a'] ? File::FNM_DOTMATCH : 0
+  pathnames = Pathname.glob('*', flags).sort
+  options['r'] ? pathnames.reverse : pathnames
 end
 
 def extract_file_entries(file_list)
