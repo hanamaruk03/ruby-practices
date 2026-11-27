@@ -26,7 +26,7 @@ def main
   file_list = glob_list(options)
 
   if options['l']
-    entries = extract_file_entries(file_list)
+    entries = build_file_entries(file_list)
     total_blocks = count_total_blocks(entries)
     puts "total #{total_blocks}"
 
@@ -45,7 +45,7 @@ def glob_list(options)
   options['r'] ? pathnames.reverse : pathnames
 end
 
-def extract_file_entries(file_list)
+def build_file_entries(file_list)
   file_list.map do |file|
     {
       type_and_authority: entry_type(file) + change_mode_to_permission(file.stat.mode),
