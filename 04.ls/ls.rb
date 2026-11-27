@@ -22,45 +22,44 @@ AUTHORITY = {
 }.freeze
 
 def main
-  options = parse_options
+  options = ARGV.getopts('a', 'r', 'l')
+  file_list = glob_list(options)
 
-  rows =
-    if options[:l]
-      entries = extract_file_entries
-      total_blocks = count_total_blocks(entries)
-      puts "total #{total_blocks}"
+  if options['l']
+    entries = build_file_entries(file_list)
+    total_blocks = count_total_blocks(entries)
+    puts "total #{total_blocks}"
 
-      format_entry(entries)
-    else
-      items = Dir.glob('*').sort
-      build_horizontal_rows(items).transpose
-    end
-  print_grid(rows)
+    print_grid(format_entries(entries), ' ')
+  else
+    entries = file_list.map { |file| file.basename.to_s }
+    rows = build_horizontal_rows(entries).transpose
+
+    print_grid(rows, '  ')
+  end
 end
 
-def parse_options
-  options = {}
-  opt = OptionParser.new
-  opt.on('-l') { |v| options[:l] = v }
-  opt.parse!(ARGV)
-  options
+def glob_list(options)
+  flags = options['a'] ? File::FNM_DOTMATCH : 0
+  pathnames = Pathname.glob('*', flags).sort
+  options['r'] ? pathnames.reverse : pathnames
 end
 
-def extract_file_entries
-  Pathname.glob('*').map do |pathname|
+def build_file_entries(file_list)
+  file_list.map do |file|
     {
-      type_and_authority: entry_type(pathname) + change_mode_to_permission(pathname.stat.mode),
-      nlink: pathname.stat.nlink,
-      owner_name: Etc.getpwuid(pathname.stat.uid).name,
-      group_name: Etc.getgrgid(pathname.stat.gid).name,
-      size: pathname.size,
-      modification_time: pathname.mtime.strftime('%b %d %H:%M'),
-      file_name: pathname.basename
+      type_and_authority: entry_type(file) + change_mode_to_permission(file.stat.mode),
+      nlink: file.stat.nlink,
+      owner_name: Etc.getpwuid(file.stat.uid).name,
+      group_name: Etc.getgrgid(file.stat.gid).name,
+      size: file.size,
+      modification_time: file.mtime.strftime('%b %d %H:%M'),
+      file_name: file.basename
     }
   end
 end
 
-def format_entry(entries)
+def format_entries(entries)
   widths = Hash.new(0)
   entries.each do |details|
     details.each { |key, value| widths[key] = [widths[key], value.to_s.length].max }
@@ -94,12 +93,12 @@ def entry_type(entry)
   end
 end
 
-def build_horizontal_rows(items)
-  items += [nil] while items.count % COLUMN_SIZE != 0
+def build_horizontal_rows(entries)
+  entries += [nil] while entries.count % COLUMN_SIZE != 0
 
-  row_size = items.count / COLUMN_SIZE
+  row_size = entries.count / COLUMN_SIZE
 
-  items.each_slice(row_size).filter_map do |row|
+  entries.each_slice(row_size).filter_map do |row|
     next if row.all?(&:nil?)
 
     width = row.compact.max_by(&:length).length
@@ -107,9 +106,9 @@ def build_horizontal_rows(items)
   end
 end
 
-def print_grid(rows)
+def print_grid(rows, separator)
   rows.each do |row|
-    puts row.compact.join(' ')
+    puts row.compact.join(separator)
   end
 end
 
