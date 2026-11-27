@@ -5,7 +5,6 @@ require 'optparse'
 require 'pathname'
 require 'etc'
 
-OPTIONS = ARGV.getopts('a', 'r', 'l')
 COLUMN_SIZE = 3
 BYTE_ARRAY = 4
 BLOCK_SIZE = 4096
@@ -23,9 +22,10 @@ AUTHORITY = {
 }.freeze
 
 def main
-  file_list = make_list
+  options = ARGV.getopts('a', 'r', 'l')
+  file_list = make_list(options)
 
-  if OPTIONS['l']
+  if options['l']
     entries = extract_file_entries(file_list)
     total_blocks = count_total_blocks(entries)
     puts "total #{total_blocks}"
@@ -39,17 +39,9 @@ def main
   end
 end
 
-def make_list
-  list = Pathname.glob('*', OPTIONS['a'] ? File::FNM_DOTMATCH : 0).sort
-  OPTIONS['r'] ? list.reverse : list
-end
-
-def parse_options
-  options = {}
-  opt = OptionParser.new
-  opt.on('-l') { |v| options[:l] = v }
-  opt.parse!(ARGV)
-  options
+def make_list(options)
+  list = Pathname.glob('*', options['a'] ? File::FNM_DOTMATCH : 0).sort
+  options['r'] ? list.reverse : list
 end
 
 def extract_file_entries(file_list)
