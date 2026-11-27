@@ -30,10 +30,10 @@ def main
     total_blocks = count_total_blocks(entries)
     puts "total #{total_blocks}"
 
-    print_grid(format_entry(entries), ' ')
+    print_grid(format_entries(entries), ' ')
   else
-    items = file_list.map { |file| file.basename.to_s }
-    rows = build_horizontal_rows(items).transpose
+    entries = file_list.map { |file| file.basename.to_s }
+    rows = build_horizontal_rows(entries).transpose
 
     print_grid(rows, '  ')
   end
@@ -59,7 +59,7 @@ def build_file_entries(file_list)
   end
 end
 
-def format_entry(entries)
+def format_entries(entries)
   widths = Hash.new(0)
   entries.each do |details|
     details.each { |key, value| widths[key] = [widths[key], value.to_s.length].max }
@@ -93,12 +93,12 @@ def entry_type(entry)
   end
 end
 
-def build_horizontal_rows(items)
-  items += [nil] while items.count % COLUMN_SIZE != 0
+def build_horizontal_rows(entries)
+  entries += [nil] while entries.count % COLUMN_SIZE != 0
 
-  row_size = items.count / COLUMN_SIZE
+  row_size = entries.count / COLUMN_SIZE
 
-  items.each_slice(row_size).filter_map do |row|
+  entries.each_slice(row_size).filter_map do |row|
     next if row.all?(&:nil?)
 
     width = row.compact.max_by(&:length).length
